@@ -9,7 +9,10 @@
  * PAGES
  */
 const PAGES = {
-  "/": `/`
+  "/": `/`,
+  "/admin": `/admin`,
+  "/auth/login": `/auth/login`,
+  "/auth/register": `/auth/register`
 }
 
 /**
@@ -28,7 +31,9 @@ const SERVERS = {
  * ACTIONS
  */
 const ACTIONS = {
-  
+  "logout /": `/?/logout`,
+  "default /auth/login": `/auth/login`,
+  "default /auth/register": `/auth/register`
 }
 
 /**
@@ -143,9 +148,9 @@ export function route<T extends keyof AllTypes>(key: T, ...params: any[]): strin
 * ```
 */
 export type KIT_ROUTES = {
-  PAGES: { '/': never }
+  PAGES: { '/': never, '/admin': never, '/auth/login': never, '/auth/register': never }
   SERVERS: { 'GET /api/[...remult]/docs': 'remult', 'GET /api/[...remult]/openapi.json': 'remult' }
-  ACTIONS: Record<string, never>
+  ACTIONS: { 'logout /': never, 'default /auth/login': never, 'default /auth/register': never }
   LINKS: Record<string, never>
   Params: { 'remult': never }
 }
