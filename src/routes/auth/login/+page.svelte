@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { route } from '$lib/ROUTES';
 
 	let messageError = $state('');
 	let form: HTMLFormElement;
@@ -19,9 +18,7 @@
 		return async ({ result, update }) => {
 			if (result.type === 'failure') {
 				const error = result.data?.error;
-				messageError = typeof error === 'string' ? error : 'An error occurred';
-			} else if (result.type === 'redirect') {
-				messageError = '';
+				messageError = typeof error === 'string' ? error : 'An error occurred L2';
 			}
 			await update();
 		};

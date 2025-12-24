@@ -1,7 +1,10 @@
-import { auth } from '$modules/auth/server/auth';
-import { fail, redirect } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from './$types';
 import { route } from '$lib/ROUTES';
+import { extractFormData } from '$lib/utils';
+import { registrationSchema } from '$modules/auth/authSchemas';
+import { auth } from '$modules/auth/server/auth';
+import { fail, isRedirect, redirect } from '@sveltejs/kit';
+import type { Actions, PageServerLoad } from './$types';
+import { Roles } from '$modules/auth/Roles';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) {
@@ -11,31 +14,31 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
 	default: async ({ request }) => {
-		const formData = await request.formData();
-		const name = formData.get('name')?.toString();
-		const email = formData.get('email')?.toString();
-		const password = formData.get('password')?.toString();
+		const { data, error } = await extractFormData(request, registrationSchema);
 
-		if (!name || !email || !password) {
-			return fail(400, { error: 'Name, email and password are required' });
+		if (error || !data) {
+			console.error(error);
+			return fail(400, { error });
 		}
 
 		try {
+			// Remove confirm_password before sending to auth API
+			
 			await auth.api.signUpEmail({
-				body: {
-					name,
-					email,
-					password
-				},
+				body: {...data, roles: [Roles.Admin]},
 				headers: request.headers
 			});
 			redirect(302, route('/admin'));
 		} catch (error) {
+			// Re-throw redirects - they're not errors
+			if (isRedirect(error)) {
+				throw error;
+			}
+
 			// TODO: Save errors to Database
 			console.error(error);
-			return fail(400, { error: (error as Error)?.message ?? 'An error occurred' });
+			return fail(400, { error: (error as Error)?.message ?? 'An error occurred during registration' });
 		}
-
 	}
 };
 
