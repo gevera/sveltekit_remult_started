@@ -1,0 +1,58 @@
+FROM node:24-alpine
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY . .
+
+# Build arguments for environment variables
+ARG TURSO_DATABASE_URL
+ARG TURSO_AUTH_TOKEN
+ARG BETTER_AUTH_SECRET
+ARG GITHUB_CLIENT_ID
+ARG GITHUB_CLIENT_SECRET
+ARG SUPER_ADMIN_EMAILS
+ARG R2_ENDPOINT
+ARG R2_ACCESS_KEY_ID
+ARG R2_SECRET_ACCESS_KEY
+ARG R2_BUCKET_NAME
+ARG R2_REGION
+ARG R2_TOKEN
+ARG RUNTIME_ENV
+ARG ORIGIN
+
+# Set environment variables
+ENV TURSO_DATABASE_URL=${TURSO_DATABASE_URL}
+ENV TURSO_AUTH_TOKEN=${TURSO_AUTH_TOKEN}
+ENV BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+ENV GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+ENV GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+ENV SUPER_ADMIN_EMAILS=${SUPER_ADMIN_EMAILS}
+ENV R2_ENDPOINT=${R2_ENDPOINT}
+ENV R2_ACCESS_KEY_ID=${R2_ACCESS_KEY_ID}
+ENV R2_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
+ENV R2_BUCKET_NAME=${R2_BUCKET_NAME}
+ENV R2_REGION=${R2_REGION}
+ENV R2_TOKEN=${R2_TOKEN}
+ENV RUNTIME_ENV=${RUNTIME_ENV}
+ENV ORIGIN=${ORIGIN}
+ENV NODE_ENV=production
+
+# Build the application
+RUN pnpm build
+
+# Expose port
+EXPOSE 3000
+
+# Start the application
+CMD ["node", "build/index.js"]

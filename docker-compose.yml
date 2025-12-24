@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - TURSO_DATABASE_URL=${TURSO_DATABASE_URL}
+        - TURSO_AUTH_TOKEN=${TURSO_AUTH_TOKEN}
+        - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+        - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+        - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+        - SUPER_ADMIN_EMAILS=${SUPER_ADMIN_EMAILS}
+        - R2_ENDPOINT=${R2_ENDPOINT}
+        - R2_ACCESS_KEY_ID=${R2_ACCESS_KEY_ID}
+        - R2_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
+        - R2_BUCKET_NAME=${R2_BUCKET_NAME}
+        - R2_REGION=${R2_REGION}
+        - R2_TOKEN=${R2_TOKEN}
+        - RUNTIME_ENV=${RUNTIME_ENV}
+        - ORIGIN=${ORIGIN}
+    container_name: dashboard
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
