@@ -54,4 +54,3 @@ export const GET: RequestHandler = async ({ params }) => {
 		throw error(404, 'Image not found');
 	}
 };
-

@@ -2,7 +2,7 @@ import { auth } from '$modules/auth/server/auth';
 import { fail, redirect, isRedirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { route } from '$lib/ROUTES';
-import { loginSchema } from '$modules/auth/authSchemas';
+import { LoginSchema } from '$modules/auth/authSchemas';
 import { extractFormData } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
 	default: async ({ request }) => {
-		const { data, error } = await extractFormData(request, loginSchema);
+		const { data, error } = await extractFormData(request, LoginSchema);
 
 		if (error || !data) {
 			console.error(error);
@@ -39,4 +39,3 @@ export const actions: Actions = {
 		}
 	}
 };
-

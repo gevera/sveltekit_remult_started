@@ -1,6 +1,6 @@
 import { route } from '$lib/ROUTES';
 import { extractFormData } from '$lib/utils';
-import { registrationSchema } from '$modules/auth/authSchemas';
+import { RegistrationSchema } from '$modules/auth/authSchemas';
 import { auth } from '$modules/auth/server/auth';
 import { fail, isRedirect, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
 	default: async ({ request }) => {
-		const { data, error } = await extractFormData(request, registrationSchema);
+		const { data, error } = await extractFormData(request, RegistrationSchema);
 
 		if (error || !data) {
 			console.error(error);
@@ -23,9 +23,9 @@ export const actions: Actions = {
 
 		try {
 			// Remove confirm_password before sending to auth API
-			
+
 			await auth.api.signUpEmail({
-				body: {...data, roles: [Roles.Admin]},
+				body: { ...data, roles: [Roles.Admin] },
 				headers: request.headers
 			});
 			redirect(302, route('/admin'));
@@ -37,8 +37,9 @@ export const actions: Actions = {
 
 			// TODO: Save errors to Database
 			console.error(error);
-			return fail(400, { error: (error as Error)?.message ?? 'An error occurred during registration' });
+			return fail(400, {
+				error: (error as Error)?.message ?? 'An error occurred during registration'
+			});
 		}
 	}
 };
-

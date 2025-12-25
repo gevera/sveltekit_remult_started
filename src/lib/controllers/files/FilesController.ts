@@ -1,7 +1,20 @@
 import { randomUUID } from 'crypto';
 import { BackendMethod } from 'remult';
 import * as v from 'valibot';
-import { deleteFileResultSchema, downloadUrlResultSchema, fileDataSchema, fileInfoSchema, keySchema, pathSchema, prefixSchema, uploadFileResultSchema, type DeleteFileResult, type DownloadUrlResult, type FileInfo, type UploadFileResult } from './fileSchemas';
+import {
+	deleteFileResultSchema,
+	downloadUrlResultSchema,
+	fileDataSchema,
+	fileInfoSchema,
+	keySchema,
+	pathSchema,
+	prefixSchema,
+	uploadFileResultSchema,
+	type DeleteFileResult,
+	type DownloadUrlResult,
+	type FileInfo,
+	type UploadFileResult
+} from './fileSchemas';
 import { s3Client } from './s3Client';
 
 /**
@@ -11,7 +24,7 @@ import { s3Client } from './s3Client';
 export class FilesController {
 	/**
 	 * Uploads a file to S3 storage.
-	 * 
+	 *
 	 * @param fileData - File data object containing:
 	 *   - name: The original file name (string, required)
 	 *   - type: The MIME type of the file (string, required)
@@ -24,10 +37,7 @@ export class FilesController {
 	 *   - contentType: The MIME type of the uploaded file
 	 */
 	@BackendMethod({ allowed: true })
-	static async uploadFile(
-		fileData: unknown,
-		path?: string
-	): Promise<UploadFileResult> {
+	static async uploadFile(fileData: unknown, path?: string): Promise<UploadFileResult> {
 		// Validate fileData
 		const validatedFileData = v.parse(fileDataSchema, fileData);
 
@@ -64,7 +74,7 @@ export class FilesController {
 
 	/**
 	 * Deletes a file from S3 storage.
-	 * 
+	 *
 	 * @param key - The S3 key/path of the file to delete (string, required)
 	 * @returns Promise resolving to an object containing:
 	 *   - success: Boolean indicating whether the file was successfully deleted
@@ -86,7 +96,7 @@ export class FilesController {
 
 	/**
 	 * Lists files in S3 storage, optionally filtered by a prefix.
-	 * 
+	 *
 	 * @param prefix - Optional prefix to filter files by path (string, optional)
 	 * @returns Promise resolving to an array of file information objects, each containing:
 	 *   - key: The S3 key/path of the file
@@ -108,7 +118,8 @@ export class FilesController {
 		const fileInfos = objects.map((obj) => ({
 			key: obj.Key,
 			size: typeof obj.Size === 'string' ? Number.parseInt(obj.Size, 10) : obj.Size,
-			lastModified: typeof obj.LastModified === 'string' ? new Date(obj.LastModified) : obj.LastModified,
+			lastModified:
+				typeof obj.LastModified === 'string' ? new Date(obj.LastModified) : obj.LastModified,
 			etag: obj.ETag
 		}));
 
@@ -118,7 +129,7 @@ export class FilesController {
 
 	/**
 	 * Gets the download URL for a file stored in S3.
-	 * 
+	 *
 	 * @param key - The S3 key/path of the file (string, required)
 	 * @returns Promise resolving to an object containing:
 	 *   - url: The API URL to download/access the file
@@ -138,4 +149,3 @@ export class FilesController {
 		return v.parse(downloadUrlResultSchema, result);
 	}
 }
-

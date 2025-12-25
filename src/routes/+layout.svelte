@@ -1,7 +1,7 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import Navbar from '$lib/components/Navbar.svelte';
-	
+
 	let { children, data } = $props();
 	let { user } = $derived(data);
 </script>

@@ -11,4 +11,3 @@ export const actions: Actions = {
 		redirect(302, route('/'));
 	}
 };
-

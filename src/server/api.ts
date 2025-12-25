@@ -24,7 +24,7 @@ export const api = remultApi({
 			// Add some roles to some users with env variable.
 			// SUPER_ADMIN_EMAILS
 		})
-	],
+	]
 });
 
 export const openApiDocument = api.openApiDoc({ title: 'remult-planets' });

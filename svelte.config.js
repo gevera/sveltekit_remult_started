@@ -16,7 +16,7 @@ const config = {
 			$controllers: './src/lib/controllers',
 			$entities: './src/lib/entities',
 			$modules: './src/modules',
-			$server: './src/server',
+			$server: './src/server'
 		}
 	},
 	vitePlugin: {

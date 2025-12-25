@@ -2,14 +2,8 @@ import * as v from 'valibot';
 
 // Schemas
 export const fileDataSchema = v.object({
-	name: v.pipe(
-		v.string('File name must be a string.'),
-		v.nonEmpty('File name is required.')
-	),
-	type: v.pipe(
-		v.string('File type must be a string.'),
-		v.nonEmpty('File type is required.')
-	),
+	name: v.pipe(v.string('File name must be a string.'), v.nonEmpty('File name is required.')),
+	type: v.pipe(v.string('File type must be a string.'), v.nonEmpty('File type is required.')),
 	data: v.pipe(
 		v.string('File data must be a base64 encoded string.'),
 		v.nonEmpty('File data is required.')
@@ -45,10 +39,7 @@ export type FileInfo = v.InferOutput<typeof fileInfoSchema>;
 export type DeleteFileResult = v.InferOutput<typeof deleteFileResultSchema>;
 export type DownloadUrlResult = v.InferOutput<typeof downloadUrlResultSchema>;
 
-export const keySchema = v.pipe(
-	v.string('Key must be a string.'),
-	v.nonEmpty('Key is required.')
-);
+export const keySchema = v.pipe(v.string('Key must be a string.'), v.nonEmpty('Key is required.'));
 
 export const prefixSchema = v.optional(v.string('Prefix must be a string.'));
 
