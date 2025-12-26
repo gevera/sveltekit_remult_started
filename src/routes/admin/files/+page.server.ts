@@ -25,7 +25,7 @@ export const actions = {
 			return { error: 'Invalid key' };
 		}
 
-		await FilesController.deleteFile(key);
+		await FilesController.deleteFile({ key });
 		return { success: true };
 	},
 	upload: async ({ request }) => {

@@ -36,7 +36,7 @@ export class FilesController {
 	 *   - contentType: The MIME type of the uploaded file
 	 */
 	@BackendMethod({ allowed: true })
-	static async uploadFile(fileData: unknown, path?: string): Promise<UploadFileResult> {
+	static async uploadFile(fileData: FileDataSchema, path?: string): Promise<UploadFileResult> {
 		// Validate fileData
 		const validatedFileData = await validateSchema(FileDataSchema, fileData);
 
@@ -79,9 +79,9 @@ export class FilesController {
 	 *   - success: Boolean indicating whether the file was successfully deleted
 	 */
 	@BackendMethod({ allowed: true })
-	static async deleteFile(key: unknown): Promise<DeleteFileResult> {
+	static async deleteFile(key: KeySchema): Promise<DeleteFileResult> {
 		// Validate key
-		const validatedKeyData = await validateSchema(KeySchema, { key });
+		const validatedKeyData = await validateSchema(KeySchema, key);
 
 		const deleted = await s3Client.deleteObject(validatedKeyData.key);
 
@@ -132,9 +132,9 @@ export class FilesController {
 	 *   - url: The API URL to download/access the file
 	 */
 	@BackendMethod({ allowed: true })
-	static async getDownloadUrl(key: unknown): Promise<DownloadUrlResult> {
+	static async getDownloadUrl(key: KeySchema): Promise<DownloadUrlResult> {
 		// Validate key
-		const validatedKeyData = await validateSchema(KeySchema, { key });
+		const validatedKeyData = await validateSchema(KeySchema, key);
 
 		// For public buckets, we can return the direct URL
 		// For now, return the API route URL
