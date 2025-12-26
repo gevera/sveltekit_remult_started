@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { BackendMethod } from 'remult';
 import { validateSchema } from '$lib/utils';
+import { Returns } from '$lib/utils/openApi';
 import {
 	FileDataSchema,
 	UploadFileResultSchema,
@@ -36,6 +37,7 @@ export class FilesController {
 	 *   - contentType: The MIME type of the uploaded file
 	 */
 	@BackendMethod({ allowed: true })
+	@Returns({ schema: UploadFileResultSchema })
 	static async uploadFile(fileData: FileDataSchema, path?: string): Promise<UploadFileResult> {
 		// Validate fileData
 		const validatedFileData = await validateSchema(FileDataSchema, fileData);
@@ -79,6 +81,7 @@ export class FilesController {
 	 *   - success: Boolean indicating whether the file was successfully deleted
 	 */
 	@BackendMethod({ allowed: true })
+	@Returns({ schema: DeleteFileResultSchema })
 	static async deleteFile(key: KeySchema): Promise<DeleteFileResult> {
 		// Validate key
 		const validatedKeyData = await validateSchema(KeySchema, key);
@@ -104,6 +107,7 @@ export class FilesController {
 	 *   - etag: The ETag of the file
 	 */
 	@BackendMethod({ allowed: true })
+	@Returns({ schema: FileInfoSchema, isArray: true })
 	static async listFiles(prefix?: string): Promise<FileInfo[]> {
 		// No validation needed for optional prefix (it's just a string filter)
 		const objects = await s3Client.listObjects('/', prefix || '');
@@ -132,6 +136,7 @@ export class FilesController {
 	 *   - url: The API URL to download/access the file
 	 */
 	@BackendMethod({ allowed: true })
+	@Returns({ schema: DownloadUrlResultSchema })
 	static async getDownloadUrl(key: KeySchema): Promise<DownloadUrlResult> {
 		// Validate key
 		const validatedKeyData = await validateSchema(KeySchema, key);
