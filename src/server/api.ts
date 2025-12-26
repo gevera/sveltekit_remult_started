@@ -27,4 +27,4 @@ export const api = remultApi({
 	]
 });
 
-export const openApiDocument = api.openApiDoc({ title: 'remult-planets' });
+export const openApiDocument = api.openApiDoc({ title: 'remult-planets', version: '1.0.0' });

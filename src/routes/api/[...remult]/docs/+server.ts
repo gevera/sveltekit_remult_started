@@ -1,5 +1,6 @@
 import { ScalarApiReference } from '@scalar/sveltekit';
 import type { RequestHandler } from './$types';
+import { json } from '@sveltejs/kit';
 
 const render = ScalarApiReference({
 	pageTitle: 'API Documentation',
@@ -9,6 +10,10 @@ const render = ScalarApiReference({
 	]
 });
 
-export const GET: RequestHandler = () => {
-	return render();
+export const GET: RequestHandler = ({ locals }) => {
+	if (!locals.user || !locals.session) {
+		return json({ error: 'Unauthorized' }, { status: 401 });
+	} else {
+		return render();
+	}
 };
