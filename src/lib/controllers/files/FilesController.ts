@@ -40,7 +40,13 @@ export class FilesController {
 	@BackendMethod({ allowed: true })
 	@Accepts({ schema: FileDataSchema })
 	@Returns({ schema: UploadFileResultSchema })
-	static async uploadFile({fileData, path}: {fileData: FileDataSchema, path?: string}): Promise<UploadFileResult> {
+	static async uploadFile({
+		fileData,
+		path
+	}: {
+		fileData: FileDataSchema;
+		path?: string;
+	}): Promise<UploadFileResult> {
 		// Validate fileData
 		const validatedFileData = await validateSchema(FileDataSchema, fileData);
 

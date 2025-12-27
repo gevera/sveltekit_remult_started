@@ -23,6 +23,9 @@ const SERVERS = {
   "GET /api/[...remult]/docs": (params: { remult: (string | number)[] }) => {
     return `/api/${params['remult']?.join('/')}/docs`
   },
+  "GET /api/[...remult]/health": (params: { remult: (string | number)[] }) => {
+    return `/api/${params['remult']?.join('/')}/health`
+  },
   "GET /api/[...remult]/openapi.json": (params: { remult: (string | number)[] }) => {
     return `/api/${params['remult']?.join('/')}/openapi.json`
   },
@@ -155,7 +158,7 @@ export function route<T extends keyof AllTypes>(key: T, ...params: any[]): strin
 */
 export type KIT_ROUTES = {
   PAGES: { '/': never, '/admin': never, '/admin/files': never, '/auth/login': never, '/auth/register': never }
-  SERVERS: { 'GET /api/[...remult]/docs': 'remult', 'GET /api/[...remult]/openapi.json': 'remult', 'GET /api/images/[filename]': 'filename' }
+  SERVERS: { 'GET /api/[...remult]/docs': 'remult', 'GET /api/[...remult]/health': 'remult', 'GET /api/[...remult]/openapi.json': 'remult', 'GET /api/images/[filename]': 'filename' }
   ACTIONS: { 'logout /': never, 'delete /admin/files': never, 'upload /admin/files': never, 'default /auth/login': never, 'default /auth/register': never }
   LINKS: Record<string, never>
   Params: { 'remult': never, 'filename': never }

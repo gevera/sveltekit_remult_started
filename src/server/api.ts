@@ -10,15 +10,17 @@ import { TursoDataProvider } from 'remult/remult-turso';
 // List of controllers to include in OpenAPI
 export const controllers = [FilesController, SampleController];
 
+export const dbClient = createClient({
+	url: env.TURSO_DATABASE_URL,
+	authToken: env.TURSO_AUTH_TOKEN
+});
+
 export const api = remultApi({
 	entities: [Planet],
 	admin: true,
 	dataProvider: new SqlDatabase(
 		new TursoDataProvider(
-			createClient({
-				url: env.TURSO_DATABASE_URL,
-				authToken: env.TURSO_AUTH_TOKEN
-			})
+			dbClient
 		)
 	),
 	controllers,

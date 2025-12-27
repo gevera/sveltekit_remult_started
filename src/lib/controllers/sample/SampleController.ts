@@ -22,7 +22,7 @@ export class SampleController {
 	@BackendMethod({ allowed: true })
 	@Returns({ type: 'number' })
 	@Accepts({ schema: InputNumbersSchema })
-	static async addNumbers({a,b}: {a: number, b: number}) {
+	static async addNumbers({ a, b }: { a: number; b: number }) {
 		const validatedData = await validateSchema(InputNumbersSchema, { a, b });
 		const result = validatedData.a + validatedData.b;
 		return result;
