@@ -1,5 +1,8 @@
 FROM node:24-alpine
 
+# Install wget and curl
+RUN apk add --no-cache wget
+
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
