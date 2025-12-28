@@ -32,6 +32,9 @@ importers:
       ts-pattern:
         specifier: ^5.9.0
         version: 5.9.0
+      wrangler:
+        specifier: ^4.54.0
+        version: 4.54.0(@cloudflare/workers-types@4.20251228.0)
     devDependencies:
       '@eslint/compat':
         specifier: ^2.0.0
