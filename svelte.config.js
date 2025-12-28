@@ -1,4 +1,5 @@
-import adapter from '@sveltejs/adapter-node';
+import adapterNode from '@sveltejs/adapter-node';
+import adapterCloudflare from '@sveltejs/adapter-cloudflare';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -11,7 +12,8 @@ const config = {
 		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
 		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
-		adapter: adapter(),
+		// Select adapter based on ADAPTER environment variable (defaults to node)
+		adapter: process.env.ADAPTER === 'cloudflare' ? adapterCloudflare() : adapterNode(),
 		alias: {
 			$controllers: './src/lib/controllers',
 			$entities: './src/lib/entities',
